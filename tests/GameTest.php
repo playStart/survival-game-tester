@@ -1,5 +1,4 @@
 <?php
-use PhpParser\Builder\Param;
 use PHPUnit\Framework\TestCase;
 use App\Game;
 
@@ -10,10 +9,8 @@ class GameTest extends TestCase
         $game->play();
 
         $this->assertNotNull($game->col_num);
-
         $this->assertNotNull($game->row_num);
 
-        //print_r($game->getPlayerDataList());
         $logs = $game->getPlayDataListLog();
         $result = array_pop($logs); // 마지막 플래이어
         $result = array_filter($result, function ($val) {
@@ -25,7 +22,5 @@ class GameTest extends TestCase
         } else {
             echo "무승부";
         }
-        
-
     }
 }

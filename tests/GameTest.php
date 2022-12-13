@@ -13,14 +13,35 @@ class GameTest extends TestCase
 
         $logs = $game->getPlayDataListLog();
         $result = array_pop($logs); // 마지막 플래이어
-        $result = array_filter($result, function ($val) {
+        echo $this->getWinner($result);
+    }
+
+    public function testMultiPlay() {
+        $winner = [];
+        // TODO GAME 의 createOnce 메소드 수정 필요
+        for ($i = 1; $i < 100; $i ++) {
+            $game = Game::createOnce(10, 10);
+            $game->play();
+            $logs = $game->getPlayDataListLog();
+            $result = array_pop($logs); // 마지막 플래이어
+            $win = $this->getWinner($result);
+            $winner[$win] = empty($winner[$win]) ? 1 : $winner[$win]+1;
+        }
+        print_r($winner);
+
+        // 그래도 승률이 약 40%정도 됨
+
+    }
+
+    public function getWinner($lastLog) {
+        $result = array_filter($lastLog, function ($val) {
             return $val['hp'] > 0;
         });
         if(count($result) > 0) {
             $winner = array_pop($result);
-            echo "{$winner['id']} 승리";
+            return $winner['id'];
         } else {
-            echo "무승부";
+            return 'tie';
         }
     }
 }
